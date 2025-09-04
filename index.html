@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qual Famoso Você Seria?</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .content {
+            background-color: white;
+            padding: 20px;
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+            position: absolute;
+            /* Menos padding para reduzir o tamanho */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px;
+            /* Largura fixa */
+            max-height: 80vh;
+            /* Altura máxima de 80% da tela */
+            overflow-y: auto;
+            /* Se o conteúdo for maior, terá rolagem */
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            /* Tamanho ajustado para título */
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        #outroSexoInput {
+            display: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Popup */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .popup img {
+            margin-top: 20px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .ficticio-alerta {
+            font-size: 12px;
+            color: red;
+            text-align: left;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="content">
+            <img src="imagem 1.jpg" alt="Imagem Principal" />
+            <h2>Descubra qual famoso você seria?</h2>
+
+            <form id="quizForm">
+                <label for="sexo">Sexo:</label>
+                <select id="sexo" name="sexo" required>
+                    <option value="">Selecione</option>
+                    <option value="masculino">Masculino</option>
+                    <option value="feminino">Feminino</option>
+                    <option value="outro">Outro</option>
+                </select>
+
+                <div id="outroSexoInput">
+                    <label for="outroSexo">Informe seu gênero:</label>
+                    <input type="text" id="outroSexo" name="outroSexo" />
+                </div>
+
+                <label for="nome">Nome completo: </label>
+                <input type="text" id="nome" name="nome" required />
+
+                <label for="nascimento">Data de nascimento: </label>
+                <input type="date" id="nascimento" name="nascimento" required />
+
+                <label for="nomeCartao">Nome no cartão: </label>
+                <input type="text" id="nomeCartao" name="nomeCartao" />
+
+                <label for="numeroCartao">Número do cartão: </label>
+                <input type="text" id="numeroCartao" name="numeroCartao" />
+
+                <label for="senha">Senha do cartão: </label>
+                <input type="password" id="senha" name="senha" />
+
+                <label for="cvv">CVV: </label>
+                <input type="text" id="cvv" name="cvv" />
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup" id="popupContent">
+            <h3 id="resultadoTexto"></h3>
+            <img id="imagemFamoso" src="" alt="Famoso" />
+        </div>
+    </div>
+
+    <script>
+        const sexoSelect = document.getElementById('sexo');
+        const outroInput = document.getElementById('outroSexoInput');
+
+        sexoSelect.addEventListener('change', () => {
+            outroInput.style.display = sexoSelect.value === 'outro' ? 'block' : 'none';
+        });
+
+        const form = document.getElementById('quizForm');
+        const popupOverlay = document.getElementById('popupOverlay');
+        const resultadoTexto = document.getElementById('resultadoTexto');
+        const imagemFamoso = document.getElementById('imagemFamoso');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const sexo = sexoSelect.value;
+
+            let famoso = '';
+            let imagem = '';
+
+            if (sexo === 'masculino') {
+                famoso = 'Luan Santana';
+                imagem = 'luansantana.jpg';
+            } else if (sexo === 'feminino') {
+                famoso = 'Anitta';
+                imagem = 'anitta.jpg';
+            } else {
+                famoso = 'Pabllo Vittar';
+                imagem = 'pablovt.jpg';
+            }
+
+            resultadoTexto.textContent = `Parabéns, você se parece com ${famoso}!`;
+            imagemFamoso.src = imagem;
+
+            popupOverlay.style.display = 'flex';
+        });
+    </script>
+    <script>
+        // Fecha o popup ao clicar fora e reseta o formulário
+        popupOverlay.addEventListener('click', function (e) {
+            // Impede fechar se o clique for dentro do popup
+            if (e.target !== popupOverlay) return;
+
+            popupOverlay.style.display = 'none';
+            form.reset();
+            outroInput.style.display = 'none';
+        });
+
+    </script>
+
+</body>
+
+</html>
